@@ -1,12 +1,11 @@
-# Team Name
+# Zookeepers
 
 Project description (~1 paragraph)
 
 ## Team Members and Roles
 
-* Member 1 (Role 1, Role 2)
+* [Yash Hazari](https://github.com/yashhazari/CIS350-HW2-Hazari.git) (Lead SW Developer, Repository Manager)
 * Member 2 (Role 3, Role 4)
-* Member 3 (Role 5, Role 6)
 
 ## Prerequisites
 
