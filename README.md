@@ -8,5 +8,10 @@ Our project creates an interface that is designed for people who work in zoos.  
 * [Lucian Whitaker](https://github.com/LucianWhitaker/CIS350-HW2-Whitaker.git) (Project Manager, Lead Tester)
 
 ## Prerequisites:
+- Python understanding
+- PyCharm
+- (Others TBD)
 
 ## Run Instructions
+- Using PyCharm
+- (Specific details TBD)
