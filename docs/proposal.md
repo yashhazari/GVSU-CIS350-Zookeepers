@@ -19,14 +19,14 @@ Our project will follow a form of the V-model to test as much as possible allowi
 
 # Estimated Timeline
 
-9/30/2024: Requirements and System Analysis Complete
-10/7/2024: Software and Module Design Complete
-11/4/2024: Project Code and Test Code Complete
-11/9/2024: Unit Testing Complete
-11/18/2024: Integration Testing Complete
-11/24/2024: System Testing Complete
-12/2/2024: User-Acceptance Testing Complete
-12/6/2024: Project Fully Complete (Including Documentation and Refinements)
+1. 9/30/2024: Requirements and System Analysis Complete
+2. 10/7/2024: Software and Module Design Complete
+3. 11/4/2024: Project Code and Test Code Complete
+4. 11/9/2024: Unit Testing Complete
+5. 11/18/2024: Integration Testing Complete
+6. 11/24/2024: System Testing Complete
+7. 12/2/2024: User-Acceptance Testing Complete
+8. 12/6/2024: Project Fully Complete (Including Documentation and Refinements)
 
 # Anticipated Problems
 
