@@ -6,8 +6,15 @@ Team members: Yash Hazari and Lucian Whitaker
 
 Our project is primarily for people who work in zoos (zookeepers), but will have a large impact beyond just them. This interface will allow zookeepers to have immense details and facts available about many different species without having to memorize it all.  This would allow for a better experience for visitors.  They would be able to learn more and zookeepers would be more prepared for questions they may get asked.  To add, this would make for a better reputation of the zoos that utilize this service because they have more knowledge.  Thus more business would be brought in, and the zoo would prosper which is good for investors.
 
-This project creates the interface and backend for this application.  Thus, when you run the project code you should be able to have a window 
-(Also define some loosely defined features of your project using bullet points)
+This project creates the interface and backend for this application.  Thus, when you run the project code you should be able to have a window open with the full capabilities and functionality described.  This includes being able to see the search bar to search available animals.  To add, there will also be a drop down menu to select an animal/species.  Our last defining feature of this application will be the ability to favorite certain animals/species.  The nice thing about animals that the user favorites is that those animals will appear at the top of the drop down menu (before those that are not favorited).
+
+Overall, this project allows for a larger amount of knowledge to be more readily available at the fingertips of those who work in zoos.  This application will impact many people making for a more insightful and better experience at the zoos that choose to use it.  It holds a great benefit to users of this application because they won't have to memorze so many scrutinous details and facts.  Instead, they will just have an easy way to access it at anytime they need it.  In summary, this application has a large impact with a lot of benefits to many different people and would make for an excellent project.
+
+Key Features:
+
+- Search bar
+- Favortie animals button
+- Drop down menu/list (with favorited animals at the top)
 
 # Anticipated Technologies
 
