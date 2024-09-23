@@ -4,7 +4,9 @@ Team members: Yash Hazari and Lucian Whitaker
 
 # Introduction
 
-Our project is primarily for people who work in zoos (zookeepers), but will have a large impact beyond just them.  
+Our project is primarily for people who work in zoos (zookeepers), but will have a large impact beyond just them. This interface will allow zookeepers to have immense details and facts available about many different species without having to memorize it all.  This would allow for a better experience for visitors.  They would be able to learn more and zookeepers would be more prepared for questions they may get asked.  To add, this would make for a better reputation of the zoos that utilize this service because they have more knowledge.  Thus more business would be brought in, and the zoo would prosper which is good for investors.
+
+This project creates the interface and backend for this application.  Thus, when you run the project code you should be able to have a window 
 (Also define some loosely defined features of your project using bullet points)
 
 # Anticipated Technologies
