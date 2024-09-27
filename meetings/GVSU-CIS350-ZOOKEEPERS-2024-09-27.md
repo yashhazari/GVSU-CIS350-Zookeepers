@@ -9,7 +9,7 @@ Members present: Lucian, Yash, & Praharsha
 
 Date: 9-27-2024
 
-Time: 11:00am - 11
+Time: 11:00am - 11:20am
 
 Discussion points: 
 
