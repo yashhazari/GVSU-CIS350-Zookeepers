@@ -1,21 +1,21 @@
 # CIS350 Meeting Instructions
 
 
-## Meeting minutes 09/27/24
+## Meeting minutes 09-27-24
 
 Team name: Zookeepers
 
-Members present: Lucian,Yash, & Praharsha
+Members present: Lucian, Yash, & Praharsha
 
-Date:9-27-2024
+Date: 9-27-2024
 
-Time:11:00am - 11
+Time: 11:00am - 11
 
 Discussion points: 
 
-*
-*
-*
+* Prioritze which base requirements you want to keep
+* Functional v Non Functional Requirements
+* Talked about what software methodoogies & technologies we will be using 
 
 Goals for next week (include responsibilities)
 
