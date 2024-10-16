@@ -1,6 +1,6 @@
 # Overview
 
-Description of document purpose (SRS)
+The purpose of a Software Requirements Specification (SRS) skeleton document is to provide a structured framework for defining and organizing the key elements of a software project. It helps guide the detailed documentation of the system’s functional and non-functional requirements. Also, it sorts the requirements based on the features they are relevant to. This helps when developing and testing your code. You are able to look at whatever feature you are working on and see the exact requirements relevent to your work that you need to meet. Another added benefit is that it documents all of your requirements and features in one easy access spot. Overall, this document serves as a guide to what features the project has and the requirements related to each of those features. 
 
 # Functional Requirements
 
@@ -10,28 +10,28 @@ Description of document purpose (SRS)
    3. The app shall update the dropdown list in real-time as the user types in the search bar.
 
 2. Favorite Button
-   1. Users shall have the ability to make species as favorites.
-   2. The Favorites shall be displayed at the top of the dropdown menu for easy access.
-   3. 
+   1. Users shall have the ability to mark species as favorites.
+   2. The favorites shall be displayed at the top of the dropdown menu.
+   3. After a species is marked favorite, it will be added to a favorites list.  
 
 3. Drop Down Menu
-   1. Functional Requirement 6
-   2. Functional Requirement 7
-   3. Functional Requirement 8
+   1. There shall be a drop down menu of possible species to choose from. 
+   2. When clicked, the drop down menu shall be populated with animals within the database. 
+   3. Animals that are marked as favorited, will be at the top of the drop down menu above animals that are not favorited. 
 
 # Non-Functional Requirements
 
 1. Search Bar
-   1. Once entered, interface shall load aniaml within 2 seconds. 
+   1. The drop down menu shall be updated based on the search bar entry within 1.5 seconds. 
    2. If a user searches for something not in the species list, an error message shall occur.
    3. The search bar shall function consistently across different operating systems and computer screen sizes. 
 
 2. Favorite Button
-   1. There shall be a feature in the app that will allow you to favorite an animal and will be added to a favorites list within 2 seconds. 
-   2. 
-   3.
+   1. When the user favorites an animal, it shall be added to a favorites list within 2 seconds. 
+   2. Favorites button shall be large enough that users hit the button on atlesat 95% of attempts. 
 
 3. Drop Down Menu 
-   1. 
-   2.
-   2. 
+   1. The drop down menu shall consistently have animals that are in the favorited list at the top of the menu. 
+   2. The drop down menu shall be able to handle the addition of new species without crashing. 
+   3. The drop down menu shall be updated based on the search entries within 1.5 seconds. 
+   4. The drop down menu shall follow a color scheme that follows the whole app interfae. 
