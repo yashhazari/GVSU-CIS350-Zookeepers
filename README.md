@@ -10,7 +10,7 @@ Our project creates an interface that is designed for people who work in zoos.  
 ## Prerequisites:
 - Python understanding
 - PyCharm
-- (Others TBD)
+- TKinter
 
 ## Run Instructions
 - Using PyCharm
