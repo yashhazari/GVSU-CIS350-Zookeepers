@@ -5,57 +5,87 @@ import requests
 import wikipediaapi
 import io
 import re
+from bs4 import BeautifulSoup
+
 
 class AnimalApp:
+    """
+    Class for the application.  This class was developed by Yash Hazari (the lead SW developer) with
+    aid from Lucian Whitaker.  The class and system were tested by Lucian Whitaker (the lead test engineer)
+    with aid from Yash Hazari.  The purpose of this class is to create the variables needed to allow for
+    all features of the app including species image/info display, drop down menu, favorite button, and 
+    search bar.  This class also defines all methods related to making those features fully functional 
+    and usable in a real setting.
+    """
     def __init__(self, root):
         self.root = root
-        self.root.title("Zookeeper App")
-        self.root.geometry("900x600")
-        self.root.configure(bg='#87CEEB')  # Sky blue background
+        self.root.title("Zookeepers - CIS350 - Project")
+        self.root.geometry("1000x675")
+        self.root.configure(bg='#FFFFE0')
 
-        # List of animals
-        self.all_animals = ["Lion", "Tiger", "Elephant", "Giraffe", "Monkey", "Penguin", "Bear", "Zebra", "Koala", "Kangaroo"]
-        self.animal_data = {}  # Cache for fetched animal data
-        self.favorite_animals = set()  # Set to store favorite animals
+        # List of animals to be featured
+        self.all_animals = [
+            "Lion", "Tiger", "Elephant", "Chicken", "Sea Star", "Giraffe", "Monkey", "Penguin", "Bear", "Zebra",
+            "Koala", "Kangaroo", "Cheetah", "Leopard", "Wolf", "Fox", "Panda", "Rhino",
+            "Hippo", "Crocodile", "Alligator", "Dolphin", "Whale", "Shark", "Eagle",
+            "Falcon", "Hawk", "Parrot", "Toucan", "Sloth", "Ostrich", "Flamingo",
+            "Peacock", "Camel", "Meerkat", "Otter", "Seal", "Walrus", "Armadillo",
+            "Porcupine", "Platypus", "Turtle", "Tortoise", "Snake", "Iguana",
+            "Lemur", "Chameleon", "Orangutan", "Baboon", "Coyote", "Moose", "Elk",
+            "Reindeer", "Bison", "Buffalo", "Antelope", "Wombat", "Tasmanian Devil",
+            "Puffin", "Polar Bear", "Grizzly Bear", "Black Bear", "Raccoon", "Skunk",
+            "Opossum", "Hedgehog", "Badger", "Ferret", "Weasel", "Mongoose",
+            "Hyena", "Jackal", "Caracal", "Serval", "Ocelot", "Snow Leopard",
+            "Sea Lion", "Manatee", "Dugong", "Narwhal", "Beluga", "Octopus",
+            "Squid", "Jellyfish", "Starfish", "Clownfish", "Sea Turtle", "Lobster",
+            "Crab", "Shrimp", "Coral", "Manta Ray", "Stingray"
+        ]
+        self.animal_data = {}  # Allows for cache of recently accessed species
+        self.favorite_animals = set()  # Set for favorite species
 
-        # Search bar
+        # Search bar label
+        self.search_label = tk.Label(root, text="Search:", bg='#FFFFE0', fg='black', anchor="w")
+        self.search_label.grid(row=0, column=0, padx=10, pady=(10, 0), sticky='w')
+
+        # Search bar creation
         self.search_var = tk.StringVar()
         self.search_entry = ttk.Entry(root, textvariable=self.search_var)
-        self.search_entry.grid(row=0, column=0, padx=10, pady=10, sticky='ew')
+        self.search_entry.grid(row=1, column=0, padx=10, pady=(0, 10), sticky='ew')
         self.search_entry.bind('<KeyRelease>', self.search_animal)
 
-        # Drop-down menu
+        # Drop-down menu creation
         self.selected_animal = tk.StringVar()
         self.dropdown = ttk.Combobox(root, textvariable=self.selected_animal, state="readonly")
-        self.dropdown.grid(row=1, column=0, padx=10, pady=10, sticky='ew')
+        self.dropdown.grid(row=2, column=0, padx=10, pady=10, sticky='ew')
         self.dropdown.bind("<<ComboboxSelected>>", self.display_animal_info)
         self.update_dropdown()
 
-        # Favorite button
+        # Favorite button creation
         self.favorite_button = ttk.Button(root, text="Favorite", command=self.add_to_favorites)
-        self.favorite_button.grid(row=1, column=1, padx=10, pady=10, sticky='ew')
+        self.favorite_button.grid(row=2, column=1, padx=10, pady=10, sticky='ew')
 
-        # Labels for displaying animal details
+        # Labels for displaying species info
         self.info_label = tk.Label(
             root,
             text="",
-            bg='#87CEEB',  # Sky blue background
+            bg='#FFFFE0',  # Sky blue background
             fg='black',  # Black text
             justify="left",
             wraplength=500,  # Updated wrap length to 500
-            anchor="w"  # Align text to the left
+            anchor="w",  # Align text to the left
+            font=('Arial', 18)
         )
-        self.info_label.grid(row=2, column=0, padx=10, pady=10, sticky='w')
+        self.info_label.grid(row=3, column=0, padx=10, pady=10, sticky='w')
 
-        # Image display
-        self.image_label = tk.Label(root, bg='#87CEEB')
-        self.image_label.grid(row=2, column=1, rowspan=4, padx=10, pady=10)
+        # Image display creation
+        self.image_label = tk.Label(root, bg='#FFFFE0')
+        self.image_label.grid(row=3, column=1, rowspan=4, padx=10, pady=10)
 
-        # Make columns resizable
+        # Make columns resizable to allow for formatting
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_columnconfigure(1, weight=1)
 
-        # List of countries (to be used for location extraction)
+        # List of countries for possible locations
         self.country_list = [
             "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia",
             "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium",
@@ -87,17 +117,20 @@ class AnimalApp:
         self.dropdown.set('')
 
     def search_animal(self, event):
+        # Searches for search entry through list to update dropdown accordingly
         search_text = self.search_var.get().lower()
         filtered_animals = [animal for animal in self.all_animals if search_text in animal.lower()]
         self.dropdown['values'] = filtered_animals
 
     def add_to_favorites(self):
+        # Adds species to favorites set
         animal = self.selected_animal.get()
         if animal and animal not in self.favorite_animals:
             self.favorite_animals.add(animal)
             self.update_dropdown()
 
     def display_animal_info(self, event):
+        # Gets the animal data if not in cache and displays it
         animal = self.selected_animal.get()
         if animal:
             if animal not in self.animal_data:
@@ -107,9 +140,10 @@ class AnimalApp:
             self.show_animal_data(animal)
 
     def fetch_animal_data(self, animal):
+        # Uses wikpedia data library to find species info and put it in animal_data
         wiki = wikipediaapi.Wikipedia(
             language='en',
-            user_agent="AnimalApp/1.0 (mailto:your-email@example.com)"
+            user_agent="AnimalApp/1.0 (mailto:hazariy@mail.gvsu.edu)"
         )
         page = wiki.page(animal)
         if page.exists():
@@ -122,31 +156,32 @@ class AnimalApp:
             self.animal_data[animal] = {"info": {"Error": "Information not found."}}
 
     def extract_details(self, text):
+        # Calls various functions to gather all the relevant species data
         details = {}
 
-        # Extract average life expectancy
         details['Average Life Expectancy'] = self.extract_life_expectancy(text)
-
-        # Extract habitat
         details['Habitat'] = self.extract_habitat(text)
-
-        # Extract diet (carnivore, herbivore, omnivore)
         details['Diet'] = self.extract_diet(text)
-
-        # Extract countries where found
         details['Locations Found'] = self.extract_locations(text)
-
-        # Remove empty or unavailable sections
+        details['Class'] = self.extract_class(text)
+        details['Reproduction'] = self.extract_reproduction(text)
+        
+        # Remove empty sections
         return {k: v for k, v in details.items() if v and v != "Not available"}
 
     def extract_life_expectancy(self, text):
-        # Extract life expectancy (using regular expression for a number pattern)
-        match = re.search(r'(\d{1,2}[-\d]{1,2})\s*years?|\d+(\.\d+)?\s*(years?)\s*life expectancy', text, re.IGNORECASE)
+        # Reg ex to capture life expectancy
+        match = re.search(r"(\d{2,3})\s*(?:years?|lifespan)", text, re.IGNORECASE)
         if match:
-            return match.group(1) + " years"
+            life_expectancy = match.group(1)
+            # Bug fix for 10 year life span
+            if life_expectancy == "000":
+                return "10 years"
+            return life_expectancy + " years"
         return "Life expectancy not available"
 
     def extract_habitat(self, text):
+        # Searches for keywords in species data page to find habitat
         habitat_keywords = ["forest", "rainforest", "grasslands", "desert", "polar", "aquatic", "mountain", "coastal"]
         for habitat in habitat_keywords:
             if habitat in text.lower():
@@ -154,6 +189,7 @@ class AnimalApp:
         return "Habitat not clearly defined"
 
     def extract_diet(self, text):
+        # Searches for keywords in species data page to find diet
         diet_keywords = {
             "herbivore": ["grass", "leaves", "plant"],
             "carnivore": ["meat", "fish", "carnivorous"],
@@ -166,30 +202,90 @@ class AnimalApp:
         return "Diet not defined"
 
     def extract_locations(self, text):
+        # Compares species data page to list of all countries to see where species are found
         countries_found = []
         for country in self.country_list:
             if country.lower() in text.lower():
                 countries_found.append(country)
         return ", ".join(countries_found) if countries_found else "Location information not available"
 
+    def extract_class(self, text):
+        # Searches for keywords in species data page to find animal class
+        classes = [
+            "Mammalia", "Aves", "Reptile", "Reptilia", "Amphibia", "Pisces", "Insecta",
+            "Arachnida", "Crustacea", "Cephalopoda", "Bird", "Fish", "Chondrichthyes"
+        ]
+        for animal_class in classes:
+            if animal_class.lower() in text.lower():
+                return animal_class
+        return "Class not defined"
+
+    def extract_reproduction(self, text):
+        # Searches for keywords in species data page to find reproduction/birth type
+        reproduction_keywords = {
+            "Live Birth (Viviparous)": [
+                "birth", "live birth", "viviparous", "viviparity", "placenta", "placental",
+                "gestation", "mammalian birth", "parturition", "giving birth", "offspring born alive"
+            ],
+            "Asexual": [
+                "asexual reproduction", "budding", "cloning", "asexual", "fragmentation",
+                "binary fission", "parthenogenesis", "regeneration", "self-replication",
+                "vegetative reproduction", "mitotic division", "spore formation", "gemmulation",
+                "fission", "cytoplasmic division", "somatic cell division", "clonal propagation",
+                "clonal growth", "multiplying", "asexual reproduction by mitosis", "fission"
+            ],
+            "Egg Laying (Oviparous)": [
+                "oviparous", "laying eggs", "egg-laying", "eggs", "oviparity",
+                "nesting eggs", "egg deposition", "hatching", "egg incubation"
+            ]
+        }
+        
+        for reproduction_type, keywords in reproduction_keywords.items():
+            for keyword in keywords:
+                # Match exact phrases
+                if re.search(r'\b' + re.escape(keyword) + r'\b', text.lower()):
+                    return reproduction_type
+        return "Reproduction type not specified"
+
     def fetch_image(self, animal, url):
+        # Go to image url found in species data page and extract the image
         try:
-            response = requests.get(f"https://en.wikipedia.org/wiki/Special:FilePath/{animal.lower()}.jpg", stream=True)
-            if response.status_code == 200:
-                image = Image.open(io.BytesIO(response.content))
-                image = image.resize((300, 300), Image.ANTIALIAS)
-                self.animal_data[animal]["image"] = ImageTk.PhotoImage(image)
-            else:
+            # Construct Wikipedia URL
+            wiki_url = f"https://en.wikipedia.org/wiki/{animal.replace(' ', '_')}"
+            response = requests.get(wiki_url)
+            if response.status_code != 200:
+                print(f"Failed to fetch page for {animal}. Status code: {response.status_code}")
                 self.animal_data[animal]["image"] = None
+                return
+            # Parse HTML for image
+            soup = BeautifulSoup(response.content, 'html.parser')
+            # Find the first image
+            infobox = soup.find('table', {'class': 'infobox'})
+            if infobox:
+                img_tag = infobox.find('img')
+                if img_tag:
+                    img_url = "https:" + img_tag['src']
+                    # Extract the image
+                    img_response = requests.get(img_url, stream=True)
+                    if img_response.status_code == 200:
+                        image = Image.open(io.BytesIO(img_response.content))
+                        # Resize image
+                        image = image.resize((300, 300), Image.Resampling.LANCZOS)
+                        self.animal_data[animal]["image"] = ImageTk.PhotoImage(image)
+                        return
+                    
+            print(f"No image found for {animal} in the infobox.")
+            self.animal_data[animal]["image"] = None
         except Exception as e:
-            print(f"Image fetch error for {animal}: {e}")
+            print(f"Error fetching image for {animal}: {e}")
             self.animal_data[animal]["image"] = None
 
     def show_animal_data(self, animal):
+        # Displays species info in formatted way
         data = self.animal_data[animal]
         info = data.get("info", {"Error": "No information available."})
 
-        formatted_info = "\n".join([f"{key}: {value}" for key, value in info.items()])
+        formatted_info = "\n\n".join([f"{key}: {value}" for key, value in info.items()])
         self.info_label.config(text=formatted_info)
 
         image = data.get("image")
